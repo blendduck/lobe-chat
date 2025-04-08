@@ -65,6 +65,7 @@ export class KnowledgeBaseModel {
         settings: knowledgeBases.settings,
         type: knowledgeBases.type,
         updatedAt: knowledgeBases.updatedAt,
+        userId: knowledgeBases.userId,
       })
       .from(knowledgeBases)
       .where(or(eq(knowledgeBases.userId, this.userId), eq(knowledgeBases.isPublic, true)))

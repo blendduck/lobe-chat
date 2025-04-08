@@ -3,6 +3,9 @@ import Link from 'next/link';
 import { memo, useState } from 'react';
 import { Flexbox } from 'react-layout-kit';
 
+import { useUserStore } from '@/store/user';
+import { userProfileSelectors } from '@/store/user/selectors';
+
 import Content, { knowledgeItemClass } from './Content';
 
 const useStyles = createStyles(({ css, token, isDarkMode }) => ({
@@ -39,11 +42,13 @@ export interface KnowledgeBaseItemProps {
   active?: boolean;
   id: string;
   name: string;
+  userId: string;
 }
 
-const KnowledgeBaseItem = memo<KnowledgeBaseItemProps>(({ name, active, id }) => {
+const KnowledgeBaseItem = memo<KnowledgeBaseItemProps>(({ name, active, id, userId }) => {
   const { styles, cx } = useStyles();
   const [isHover, setHovering] = useState(false);
+  const [loginUserId] = useUserStore((s) => [userProfileSelectors.userId(s)]);
 
   return (
     <Link href={`/repos/${id}`}>
@@ -59,7 +64,7 @@ const KnowledgeBaseItem = memo<KnowledgeBaseItemProps>(({ name, active, id }) =>
           setHovering(false);
         }}
       >
-        <Content id={id} name={name} showMore={isHover} />
+        <Content id={id} name={name} showMore={isHover && userId === loginUserId} />
       </Flexbox>
     </Link>
   );

@@ -3,7 +3,8 @@ import OpenAI from 'openai';
 import { z } from 'zod';
 
 import { chainAnswerWithContext } from '@/chains/answerWithContext';
-import { DEFAULT_EMBEDDING_MODEL, DEFAULT_MODEL } from '@/const/settings';
+import { DEFAULT_MODEL } from '@/const/settings';
+import { DEFAULT_FILE_EMBEDDING_MODEL_ITEM } from '@/const/settings/knowledge';
 import { serverDB } from '@/database/server';
 import { ChunkModel } from '@/database/server/models/chunk';
 import { EmbeddingModel } from '@/database/server/models/embedding';
@@ -13,8 +14,8 @@ import {
   EvalEvaluationModel,
   EvaluationRecordModel,
 } from '@/database/server/models/ragEval';
-import { ModelProvider } from '@/libs/agent-runtime';
 import { asyncAuthedProcedure, asyncRouter as router } from '@/libs/trpc/async';
+import { getServerDefaultFilesConfig } from '@/server/globalConfig';
 import { initAgentRuntimeWithUserPayload } from '@/server/modules/AgentRuntime';
 import { ChunkService } from '@/server/services/chunk';
 import { AsyncTaskError } from '@/types/asyncTask';
@@ -52,12 +53,17 @@ export const ragEvalRouter = router({
 
       const now = Date.now();
       try {
-        const agentRuntime = await initAgentRuntimeWithUserPayload(
-          ModelProvider.OpenAI,
-          ctx.jwtPayload,
-        );
+        const { model, provider } =
+          getServerDefaultFilesConfig().embeddingModel || DEFAULT_FILE_EMBEDDING_MODEL_ITEM;
 
-        const { question, languageModel, embeddingModel } = evalRecord;
+        // @patch
+        const agentRuntime = await initAgentRuntimeWithUserPayload(provider, {
+          ...ctx.jwtPayload,
+          apiKey: undefined,
+          baseURL: undefined,
+        });
+
+        const { question, languageModel } = evalRecord;
 
         let questionEmbeddingId = evalRecord.questionEmbeddingId;
         let context = evalRecord.context;
@@ -67,12 +73,12 @@ export const ragEvalRouter = router({
           const embeddings = await agentRuntime.embeddings({
             dimensions: 1024,
             input: question,
-            model: !!embeddingModel ? embeddingModel : DEFAULT_EMBEDDING_MODEL,
+            model,
           });
 
           const embeddingId = await ctx.embeddingModel.create({
             embeddings: embeddings?.[0],
-            model: embeddingModel,
+            model,
           });
 
           await ctx.evalRecordModel.update(evalRecord.id, {

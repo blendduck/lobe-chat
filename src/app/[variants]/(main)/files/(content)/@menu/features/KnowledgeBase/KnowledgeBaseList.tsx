@@ -21,7 +21,9 @@ const KnowledgeBaseList = () => {
       <Virtuoso
         data={data}
         fixedItemHeight={36}
-        itemContent={(index, data) => <Item id={data.id} key={data.id} name={data.name} />}
+        itemContent={(index, data) => (
+          <Item id={data.id} key={data.id} name={data.name} userId={data.userId} />
+        )}
       />
     </Flexbox>
   );

@@ -31,7 +31,7 @@ const Header = memo<{ knowledgeBaseId?: string }>(({ knowledgeBaseId }) => {
         />
         <FilesSearchBar />
       </Flexbox>
-      <UploadFileButton knowledgeBaseId={knowledgeBaseId} />
+      {knowledgeBaseId && <UploadFileButton knowledgeBaseId={knowledgeBaseId} />}
     </Flexbox>
   );
 });
