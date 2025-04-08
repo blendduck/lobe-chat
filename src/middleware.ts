@@ -29,6 +29,8 @@ export const config = {
     '/settings(.*)',
     '/files',
     '/files(.*)',
+    '/search',
+    '/search(.*)',
     '/repos(.*)',
     '/profile(.*)',
     '/me',

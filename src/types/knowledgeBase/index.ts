@@ -28,6 +28,7 @@ export interface KnowledgeBaseItem {
 export interface CreateKnowledgeBaseParams {
   avatar?: string;
   description?: string;
+  isPublic?: boolean;
   name: string;
 }
 

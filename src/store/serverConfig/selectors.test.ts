@@ -17,6 +17,7 @@ describe('featureFlagsSelectors', () => {
     const result = featureFlagsSelectors(store.getState());
 
     expect(result).toEqual({
+      enableRAGSearch: true,
       enableWebrtc: false,
       isAgentEditable: false,
       enablePlugins: true,

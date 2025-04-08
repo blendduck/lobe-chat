@@ -1,4 +1,4 @@
-import { and, desc, eq, inArray } from 'drizzle-orm/expressions';
+import { and, desc, eq, inArray, or } from 'drizzle-orm/expressions';
 
 import { LobeChatDatabase } from '@/database/type';
 import { KnowledgeBaseItem } from '@/types/knowledgeBase';
@@ -67,7 +67,7 @@ export class KnowledgeBaseModel {
         updatedAt: knowledgeBases.updatedAt,
       })
       .from(knowledgeBases)
-      .where(eq(knowledgeBases.userId, this.userId))
+      .where(or(eq(knowledgeBases.userId, this.userId), eq(knowledgeBases.isPublic, true)))
       .orderBy(desc(knowledgeBases.updatedAt));
 
     return data as KnowledgeBaseItem[];
@@ -75,7 +75,10 @@ export class KnowledgeBaseModel {
 
   findById = async (id: string) => {
     return this.db.query.knowledgeBases.findFirst({
-      where: and(eq(knowledgeBases.id, id), eq(knowledgeBases.userId, this.userId)),
+      where: and(
+        eq(knowledgeBases.id, id),
+        or(eq(knowledgeBases.userId, this.userId), eq(knowledgeBases.isPublic, true)),
+      ),
     });
   };
 

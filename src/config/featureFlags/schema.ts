@@ -2,6 +2,7 @@
 import { z } from 'zod';
 
 export const FeatureFlagsSchema = z.object({
+  rag_search: z.boolean().optional(), // @patch
   /**
    * Enable WebRTC sync
    */
@@ -47,6 +48,7 @@ export const FeatureFlagsSchema = z.object({
 export type IFeatureFlags = z.infer<typeof FeatureFlagsSchema>;
 
 export const DEFAULT_FEATURE_FLAGS: IFeatureFlags = {
+  rag_search: true, // @patch
   webrtc_sync: false,
   pin_list: false,
 
@@ -86,6 +88,7 @@ export const DEFAULT_FEATURE_FLAGS: IFeatureFlags = {
 
 export const mapFeatureFlagsEnvToState = (config: IFeatureFlags) => {
   return {
+    enableRAGSearch: config.rag_search, // @patch
     enableWebrtc: config.webrtc_sync,
     isAgentEditable: config.edit_agent,
 

@@ -28,6 +28,7 @@ export const knowledgeBaseRouter = router({
       z.object({
         avatar: z.string().optional(),
         description: z.string().optional(),
+        isPublic: z.boolean().optional(),
         name: z.string(),
       }),
     )
@@ -35,6 +36,7 @@ export const knowledgeBaseRouter = router({
       const data = await ctx.knowledgeBaseModel.create({
         avatar: input.avatar,
         description: input.description,
+        isPublic: input.isPublic,
         name: input.name,
       });
 

@@ -3,7 +3,7 @@
 import { Icon } from '@lobehub/ui';
 import { MobileTabBar, type MobileTabBarProps } from '@lobehub/ui/mobile';
 import { createStyles } from 'antd-style';
-import { Compass, MessageSquare, User } from 'lucide-react';
+import { Compass, MessageSquare, Search, User } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { rgba } from 'polished';
 import { memo, useMemo } from 'react';
@@ -33,7 +33,7 @@ const NavBar = memo(() => {
   const activeKey = useActiveTabKey();
   const router = useRouter();
 
-  const { showMarket } = useServerConfigStore(featureFlagsSelectors);
+  const { showMarket, enableRAGSearch } = useServerConfigStore(featureFlagsSelectors);
 
   const items: MobileTabBarProps['items'] = useMemo(
     () =>
@@ -48,6 +48,18 @@ const NavBar = memo(() => {
           },
           title: t('tab.chat'),
         },
+        // @patch
+        enableRAGSearch && {
+          icon: (active: boolean) => (
+            <Icon className={active ? styles.active : undefined} icon={Search} />
+          ),
+          key: SidebarTabKey.Search,
+          onClick: () => {
+            router.push('/search');
+          },
+          title: '文件搜索',
+        },
+
         showMarket && {
           icon: (active: boolean) => (
             <Icon className={active ? styles.active : undefined} icon={Compass} />

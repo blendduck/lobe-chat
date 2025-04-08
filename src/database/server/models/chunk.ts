@@ -1,5 +1,5 @@
 import { cosineDistance, count, sql } from 'drizzle-orm';
-import { and, asc, desc, eq, inArray, isNull } from 'drizzle-orm/expressions';
+import { and, asc, desc, eq, ilike, inArray, isNull } from 'drizzle-orm/expressions';
 import { chunk } from 'lodash-es';
 
 import { LobeChatDatabase } from '@/database/type';
@@ -178,6 +178,66 @@ export class ChunkModel {
       ...item,
       metadata: item.metadata as ChunkMetadata,
     }));
+  };
+
+  semanticSearchGlobal = async ({ embedding, query }: { embedding: number[]; query: string }) => {
+    const fileMap = new Map<string, any>();
+
+    const fileNameMatches = await this.db
+      .select({
+        createdAt: files.createdAt,
+        fileId: files.id,
+        fileType: files.fileType,
+        name: files.name,
+        score: sql<number>`0.99`, // 文件名匹配分数高一些
+        size: files.size,
+      })
+      .from(files)
+      .where(ilike(files.name, `%${query}%`)); // PostgreSQL 模糊匹配
+
+    const similarity = sql<number>`1 - (${cosineDistance(embeddings.embeddings, embedding)})`;
+
+    const chunkMatches = await this.db
+      .select({
+        abstract: chunks.abstract,
+        createdAt: files.createdAt,
+        fileId: files.id,
+        fileType: files.fileType,
+        id: chunks.id,
+        index: chunks.index,
+        metadata: chunks.metadata,
+        name: files.name,
+        score: similarity,
+        size: files.size,
+        text: chunks.text,
+        type: chunks.type,
+      })
+      .from(chunks)
+      .leftJoin(embeddings, eq(chunks.id, embeddings.chunkId))
+      .leftJoin(fileChunks, eq(chunks.id, fileChunks.chunkId))
+      .leftJoin(files, eq(fileChunks.fileId, files.id))
+      .orderBy((t) => desc(t.score))
+      .limit(30);
+
+    for (const item of fileNameMatches) {
+      fileMap.set(item.fileId, {
+        ...item,
+        source: 'name',
+      });
+    }
+
+    for (const item of chunkMatches) {
+      // 如果之前已经匹配过文件名，就跳过或做合并处理
+      if (item.fileId && !fileMap.has(item.fileId) && item.score > 0.6) {
+        fileMap.set(item.fileId, {
+          ...item,
+          source: 'content',
+        });
+      }
+    }
+
+    // 按 score 排序（文件名优先）
+    return [...fileMap.values()].sort((a, b) => b.score - a.score);
   };
 
   semanticSearchForChat = async ({

@@ -5,7 +5,6 @@ import { Flexbox } from 'react-layout-kit';
 
 import PanelTitle from '@/components/PanelTitle';
 
-import FileMenu from './features/FileMenu';
 import KnowledgeBase from './features/KnowledgeBase';
 
 const Menu = () => {
@@ -15,7 +14,7 @@ const Menu = () => {
     <Flexbox gap={16} height={'100%'}>
       <Flexbox paddingInline={8}>
         <PanelTitle desc={t('desc')} title={t('title')} />
-        <FileMenu />
+        {/* <FileMenu /> */}
       </Flexbox>
       <KnowledgeBase />
     </Flexbox>

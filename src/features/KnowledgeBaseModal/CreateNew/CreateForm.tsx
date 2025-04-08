@@ -1,4 +1,4 @@
-import { Button, Form, Input } from 'antd';
+import { Button, Checkbox, Form, Input } from 'antd';
 import { css, cx } from 'antd-style';
 import { memo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -55,6 +55,9 @@ const CreateForm = memo<CreateFormProps>(({ onClose }) => {
             style={{ minHeight: 120 }}
             variant={'filled'}
           />
+        </Form.Item>
+        <Form.Item name={'isPublic'} valuePropName="checked">
+          <Checkbox>是否公开</Checkbox>
         </Form.Item>
         <Button
           block

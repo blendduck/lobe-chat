@@ -4,10 +4,10 @@
 
 export const LOBE_CHAT_CLOUD = 'LobeChat Cloud';
 
-export const BRANDING_NAME = 'LobeChat';
-export const BRANDING_LOGO_URL = '';
+export const BRANDING_NAME = 'DeepChat';
+export const BRANDING_LOGO_URL = '/logo.jpg';
 
-export const ORG_NAME = 'LobeHub';
+export const ORG_NAME = '清远职业技术学院';
 
 export const BRANDING_URL = {
   help: undefined,

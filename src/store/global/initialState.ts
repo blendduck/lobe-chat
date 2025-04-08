@@ -11,6 +11,7 @@ export enum SidebarTabKey {
   Discover = 'discover',
   Files = 'files',
   Me = 'me',
+  Search = 'search', // @patch
   Setting = 'settings',
 }
 

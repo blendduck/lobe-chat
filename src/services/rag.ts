@@ -22,6 +22,11 @@ class RAGService {
     return lambdaClient.chunk.semanticSearchForChat.mutate(params);
   };
 
+  // @patch
+  semanticSearchGlobal = async (query: string) => {
+    return lambdaClient.chunk.semanticSearchGlobal.mutate({ query });
+  };
+
   deleteMessageRagQuery = async (id: string) => {
     return lambdaClient.message.removeMessageQuery.mutate({ id });
   };

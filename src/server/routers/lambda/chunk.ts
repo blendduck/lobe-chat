@@ -108,7 +108,13 @@ export const chunkRouter = router({
     .mutation(async ({ ctx, input }) => {
       const { model, provider } =
         getServerDefaultFilesConfig().embeddingModel || DEFAULT_FILE_EMBEDDING_MODEL_ITEM;
-      const agentRuntime = await initAgentRuntimeWithUserPayload(provider, ctx.jwtPayload);
+
+      /** @patch */
+      const agentRuntime = await initAgentRuntimeWithUserPayload(provider, {
+        ...ctx.jwtPayload,
+        apiKey: undefined,
+        baseURL: undefined,
+      });
 
       const embeddings = await agentRuntime.embeddings({
         dimensions: 1024,
@@ -129,15 +135,23 @@ export const chunkRouter = router({
     .mutation(async ({ ctx, input }) => {
       try {
         const item = await ctx.messageModel.findMessageQueriesById(input.messageId);
+        console.log('semanticSearchForChat input=', input);
         const { model, provider } =
           getServerDefaultFilesConfig().embeddingModel || DEFAULT_FILE_EMBEDDING_MODEL_ITEM;
         let embedding: number[];
         let ragQueryId: string;
-
+        console.log('semanticSearchForChat provider/model=', provider, model, ctx.jwtPayload);
         // if there is no message rag or it's embeddings, then we need to create one
         if (!item || !item.embeddings) {
           // TODO: need to support customize
-          const agentRuntime = await initAgentRuntimeWithUserPayload(provider, ctx.jwtPayload);
+          /**
+           * @patch
+           */
+          const agentRuntime = await initAgentRuntimeWithUserPayload(provider, {
+            ...ctx.jwtPayload,
+            apiKey: undefined,
+            baseURL: undefined,
+          });
 
           // slice content to make sure in the context window limit
           const query =
@@ -197,5 +211,35 @@ export const chunkRouter = router({
           message: (e as any).errorType || JSON.stringify(e),
         });
       }
+    }),
+
+  /** @patch */
+  semanticSearchGlobal: chunkProcedure
+    .input(
+      z.object({
+        query: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { model, provider } =
+        getServerDefaultFilesConfig().embeddingModel || DEFAULT_FILE_EMBEDDING_MODEL_ITEM;
+
+      const agentRuntime = await initAgentRuntimeWithUserPayload(provider, {
+        ...ctx.jwtPayload,
+        apiKey: undefined,
+        baseURL: undefined,
+      });
+
+      const embeddings = await agentRuntime.embeddings({
+        dimensions: 1024,
+        input: input.query,
+        model,
+      });
+      console.timeEnd('embedding');
+
+      return ctx.chunkModel.semanticSearchGlobal({
+        embedding: embeddings![0],
+        query: input.query,
+      });
     }),
 });

@@ -91,11 +91,12 @@ export const fileRouter = router({
             await pMap(
               requestArray,
               async (chunks, index) => {
+                console.log('>>>>>>>> agentRuntime', provider, ctx.jwtPayload);
                 const agentRuntime = await initAgentRuntimeWithUserPayload(
                   provider,
                   ctx.jwtPayload,
                 );
-
+                console.log('>>>>>>>> agentRuntime', agentRuntime);
                 console.log(`run embedding task ${index + 1}`);
 
                 const embeddings = await agentRuntime.embeddings({

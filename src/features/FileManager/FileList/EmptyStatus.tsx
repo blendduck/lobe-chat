@@ -75,10 +75,12 @@ const EmptyStatus = ({ showKnowledgeBase, knowledgeBaseId }: EmptyStatusProps) =
 
   return (
     <Center gap={24} height={'100%'} style={{ paddingBottom: 100 }} width={'100%'}>
-      <Flexbox justify={'center'} style={{ textAlign: 'center' }}>
-        <Typography.Title level={4}>{t('FileManager.emptyStatus.title')}</Typography.Title>
-        <Typography.Text type={'secondary'}>{t('FileManager.emptyStatus.or')}</Typography.Text>
-      </Flexbox>
+      {knowledgeBaseId && (
+        <Flexbox justify={'center'} style={{ textAlign: 'center' }}>
+          <Typography.Title level={4}>{t('FileManager.emptyStatus.title')}</Typography.Title>
+          <Typography.Text type={'secondary'}>{t('FileManager.emptyStatus.or')}</Typography.Text>
+        </Flexbox>
+      )}
       <Flexbox gap={12} horizontal>
         {showKnowledgeBase && (
           <Flexbox
@@ -101,50 +103,56 @@ const EmptyStatus = ({ showKnowledgeBase, knowledgeBaseId }: EmptyStatusProps) =
             />
           </Flexbox>
         )}
-        <Upload
-          beforeUpload={async (file) => {
-            await pushDockFileList([file], knowledgeBaseId);
+        {knowledgeBaseId && (
+          <Upload
+            beforeUpload={async (file) => {
+              await pushDockFileList([file], knowledgeBaseId);
 
-            return false;
-          }}
-          multiple={true}
-          showUploadList={false}
-        >
-          <Flexbox className={styles.card} padding={16}>
-            <span className={styles.actionTitle}>{t('FileManager.emptyStatus.actions.file')}</span>
-            <div className={styles.glow} style={{ background: theme.gold }} />
-            <FileTypeIcon
-              className={styles.icon}
-              color={theme.gold}
-              icon={<Icon color={'#fff'} icon={ArrowUpIcon} />}
-              size={ICON_SIZE}
-            />
-          </Flexbox>
-        </Upload>
-        <Upload
-          beforeUpload={async (file) => {
-            await pushDockFileList([file], knowledgeBaseId);
+              return false;
+            }}
+            multiple={true}
+            showUploadList={false}
+          >
+            <Flexbox className={styles.card} padding={16}>
+              <span className={styles.actionTitle}>
+                {t('FileManager.emptyStatus.actions.file')}
+              </span>
+              <div className={styles.glow} style={{ background: theme.gold }} />
+              <FileTypeIcon
+                className={styles.icon}
+                color={theme.gold}
+                icon={<Icon color={'#fff'} icon={ArrowUpIcon} />}
+                size={ICON_SIZE}
+              />
+            </Flexbox>
+          </Upload>
+        )}
+        {knowledgeBaseId && (
+          <Upload
+            beforeUpload={async (file) => {
+              await pushDockFileList([file], knowledgeBaseId);
 
-            return false;
-          }}
-          directory
-          multiple={true}
-          showUploadList={false}
-        >
-          <Flexbox className={styles.card} padding={16}>
-            <span className={styles.actionTitle}>
-              {t('FileManager.emptyStatus.actions.folder')}
-            </span>
-            <div className={styles.glow} style={{ background: theme.geekblue }} />
-            <FileTypeIcon
-              className={styles.icon}
-              color={theme.geekblue}
-              icon={<Icon color={'#fff'} icon={ArrowUpIcon} />}
-              size={ICON_SIZE}
-              type={'folder'}
-            />
-          </Flexbox>
-        </Upload>
+              return false;
+            }}
+            directory
+            multiple={true}
+            showUploadList={false}
+          >
+            <Flexbox className={styles.card} padding={16}>
+              <span className={styles.actionTitle}>
+                {t('FileManager.emptyStatus.actions.folder')}
+              </span>
+              <div className={styles.glow} style={{ background: theme.geekblue }} />
+              <FileTypeIcon
+                className={styles.icon}
+                color={theme.geekblue}
+                icon={<Icon color={'#fff'} icon={ArrowUpIcon} />}
+                size={ICON_SIZE}
+                type={'folder'}
+              />
+            </Flexbox>
+          </Upload>
+        )}
       </Flexbox>
     </Center>
   );
