@@ -49,7 +49,7 @@ const SaveTopic = memo<{ mobile?: boolean }>(({ mobile }) => {
           </div>
         }
       >
-        <Tooltip>
+        <Tooltip title="">
           <ActionIcon
             aria-label={desc}
             icon={icon}
