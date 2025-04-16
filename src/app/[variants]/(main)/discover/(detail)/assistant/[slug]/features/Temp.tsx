@@ -18,6 +18,10 @@ interface ConversationExampleProps extends FlexboxProps {
   mobile?: boolean;
 }
 
+/**
+ * @patch
+ * hide System Role for blendduck agent
+ */
 const ConversationExample = memo<ConversationExampleProps>(({ data }) => {
   const { t } = useTranslation('discover');
   const theme = useTheme();
@@ -31,10 +35,10 @@ const ConversationExample = memo<ConversationExampleProps>(({ data }) => {
       title={t('assistants.systemRole')}
     >
       <Flexbox paddingInline={16}>
-        {data.config.systemRole ? (
+        {data.config.systemRole && !data.meta.hidden ? (
           <Markdown fontSize={theme.fontSize}>{data.config.systemRole}</Markdown>
         ) : (
-          <Skeleton paragraph={{ rows: 4 }} title={false} />
+          <Skeleton paragraph={{ rows: 4 }} style={{ marginTop: 16 }} title={false} />
         )}
       </Flexbox>
     </HighlightBlock>

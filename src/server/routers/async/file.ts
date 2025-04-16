@@ -105,6 +105,8 @@ export const fileRouter = router({
                   model,
                 });
 
+                console.log('ZHIPU embeddings dimensions =', embeddings?.[0].length);
+
                 const items: NewEmbeddingsItem[] =
                   embeddings?.map((e, idx) => ({
                     chunkId: chunks[idx].id,

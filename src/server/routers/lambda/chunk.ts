@@ -165,6 +165,8 @@ export const chunkRouter = router({
             model,
           });
 
+          console.log('embeddings.length =', embeddings![0].length);
+
           embedding = embeddings![0];
           const embeddingsId = await ctx.embeddingModel.create({
             embeddings: embedding,

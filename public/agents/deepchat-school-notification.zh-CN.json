@@ -22,7 +22,8 @@
     "description": "公文写作",
     "tags": ["写作"],
     "title": "公文写作",
-    "category": "writing"
+    "category": "office",
+    "hidden": true
   },
   "schemaVersion": 1
 }

@@ -11,6 +11,11 @@ export const LobeMetaDataSchema = z.object({
   backgroundColor: z.string().optional(),
   description: z.string().optional(),
 
+  /**
+   * @patch
+   */
+  hidden: z.boolean().optional(),
+
   tags: z.array(z.string()).optional(),
   /**
    * 名称

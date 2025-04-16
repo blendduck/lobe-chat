@@ -21,6 +21,7 @@ export const initialState: State = {
     avatar: false,
     backgroundColor: false,
     description: false,
+    hidden: false,
     tags: false,
     title: false,
   },
