@@ -102,7 +102,7 @@ export const fileRouter = router({
                   apiKey: undefined,
                   baseURL: undefined,
                 });
-                console.log(`run embedding task ${index + 1}`, model, provider);
+                console.log(`run embedding task ${index + 1}`, model, provider, agentRuntime);
 
                 const embeddings = await agentRuntime.embeddings({
                   dimensions: 1024,

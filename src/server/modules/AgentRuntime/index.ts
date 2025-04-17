@@ -32,10 +32,12 @@ const getLlmOptionsFromPayload = (provider: string, payload: JWTPayload) => {
   switch (provider) {
     default: {
       let upperProvider = provider.toUpperCase();
-
+      console.log('llmConfig1=', llmConfig, upperProvider);
       if (!(`${upperProvider}_API_KEY` in llmConfig)) {
         upperProvider = ModelProvider.OpenAI.toUpperCase(); // Use OpenAI options as default
       }
+
+      console.log('llmConfig2=', llmConfig, upperProvider);
 
       const apiKey = apiKeyManager.pick(payload?.apiKey || llmConfig[`${upperProvider}_API_KEY`]);
       const baseURL = payload?.baseURL || process.env[`${upperProvider}_PROXY_URL`];

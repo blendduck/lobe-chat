@@ -331,6 +331,7 @@ export const LobeOpenAICompatibleFactory = <T extends Record<string, any> = any>
       options?: EmbeddingsOptions,
     ): Promise<Embeddings[]> {
       try {
+        console.log('before embeddings call:', payload, this.client.baseURL);
         const res = await this.client.embeddings.create(
           { ...payload, user: options?.user },
           { headers: options?.headers, signal: options?.signal },
