@@ -60,6 +60,11 @@ export const fileRouter = router({
       const { model, provider } =
         getServerDefaultFilesConfig().embeddingModel || DEFAULT_FILE_EMBEDDING_MODEL_ITEM;
 
+      console.log(
+        'getServerDefaultFilesConfig().embeddingModel =',
+        getServerDefaultFilesConfig().embeddingModel,
+      );
+      console.log('model & provider =', model, provider);
       if (!asyncTask) throw new TRPCError({ code: 'BAD_REQUEST', message: 'Async Task not found' });
 
       try {
@@ -97,7 +102,7 @@ export const fileRouter = router({
                   apiKey: undefined,
                   baseURL: undefined,
                 });
-                console.log(`run embedding task ${index + 1}`);
+                console.log(`run embedding task ${index + 1}`, model, provider);
 
                 const embeddings = await agentRuntime.embeddings({
                   dimensions: 1024,
