@@ -17,6 +17,8 @@ pnpm run dev
 FEATURE_FLAGS="-market,-commercial_hide_github,-commercial_hide_docs"
 ```
 
+- 锁定 “openai=4.89.0” 解决文件向量化的问题
+
 ## 部署
 
 ### 数据库
