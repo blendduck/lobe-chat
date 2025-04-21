@@ -11,7 +11,6 @@ import { MOBILE_HEADER_ICON_SIZE } from '@/const/layoutTokens';
 import { mobileHeaderSticky } from '@/styles/mobileHeader';
 
 import StoreSearchBar from '../../../features/StoreSearchBar';
-import Nav from './Nav';
 
 const useStyles = createStyles(({ css, token }) => ({
   search: css`
@@ -38,7 +37,7 @@ const Header = memo(() => {
         )
       }
       contentStyles={{ center: { display: 'none' } }}
-      left={<Nav />}
+      // left={<Nav />}
       right={
         showSearch ? (
           <Flexbox align={'center'} className={styles.search} paddingBlock={8} paddingInline={16}>

@@ -7,8 +7,9 @@ import { DiscoverAssistantItem, DiscoverModelItem, DiscoverPlugintem } from '@/t
 
 import Title from '../../components/Title';
 import AssistantList from './features/AssistantList';
-import ModelList from './features/ModelList';
-import PluginList from './features/PluginList';
+
+// import ModelList from './features/ModelList';
+// import PluginList from './features/PluginList';
 
 interface ClientProps {
   assistantList: DiscoverAssistantItem[];
@@ -16,7 +17,7 @@ interface ClientProps {
   pluginList: DiscoverPlugintem[];
 }
 
-const Client = memo<ClientProps>(({ modelList, assistantList, pluginList }) => {
+const Client = memo<ClientProps>(({ assistantList }) => {
   const { t } = useTranslation('discover');
   return (
     <>
@@ -25,7 +26,7 @@ const Client = memo<ClientProps>(({ modelList, assistantList, pluginList }) => {
       </Title>
       <AssistantList data={assistantList} />
       <div />
-      <Title more={t('home.more')} moreLink={'/discover/plugins'}>
+      {/* <Title more={t('home.more')} moreLink={'/discover/plugins'}>
         {t('home.featuredTools')}
       </Title>
       <PluginList data={pluginList} />
@@ -34,7 +35,7 @@ const Client = memo<ClientProps>(({ modelList, assistantList, pluginList }) => {
         {t('home.featuredModels')}
       </Title>
       <div />
-      <ModelList data={modelList} />
+      <ModelList data={modelList} /> */}
     </>
   );
 });

@@ -1,19 +1,20 @@
 'use client';
 
 import { ChatHeader } from '@lobehub/ui/chat';
-import { Button } from 'antd';
+// import { Button } from 'antd';
 import { createStyles } from 'antd-style';
-import Link from 'next/link';
+// import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { memo, useState } from 'react';
 import { Flexbox } from 'react-layout-kit';
-import urlJoin from 'url-join';
 
-import { useQueryRoute } from '@/hooks/useQueryRoute';
-import { DiscoverTab } from '@/types/discover';
+// import urlJoin from 'url-join';
+
+// import { useQueryRoute } from '@/hooks/useQueryRoute';
+// import { DiscoverTab } from '@/types/discover';
 
 import { MAX_WIDTH } from '../../../features/const';
-import { useNav } from '../../../features/useNav';
+// import { useNav } from '../../../features/useNav';
 import { useScroll } from './useScroll';
 
 export const useStyles = createStyles(({ css, token }) => ({
@@ -44,8 +45,8 @@ const Nav = memo(() => {
   const [hide, setHide] = useState(false);
   const pathname = usePathname();
   const { cx, styles } = useStyles();
-  const { items, activeKey } = useNav();
-  const router = useQueryRoute();
+  // const { items, activeKey } = useNav();
+  // const router = useQueryRoute();
 
   useScroll((scroll, delta) => {
     if (delta < 0) {
@@ -60,32 +61,32 @@ const Nav = memo(() => {
   const isHome = pathname === '/discover';
   const isProviders = pathname === '/discover/providers';
 
-  const navBar = items
-    .map((item: any) => {
-      const isActive = item.key === activeKey;
+  // const navBar = items
+  //   .map((item: any) => {
+  //     const isActive = item.key === activeKey;
 
-      const href = item.key === DiscoverTab.Home ? '/discover' : urlJoin('/discover', item.key);
+  //     const href = item.key === DiscoverTab.Home ? '/discover' : urlJoin('/discover', item.key);
 
-      return (
-        <Link
-          href={href}
-          key={item.key}
-          onClick={(e) => {
-            e.preventDefault();
-            router.push(href);
-          }}
-        >
-          <Button
-            className={cx(styles.navItem, isActive && styles.activeNavItem)}
-            icon={item.icon}
-            type={'text'}
-          >
-            {item.label}
-          </Button>
-        </Link>
-      );
-    })
-    .filter(Boolean);
+  //     return (
+  //       <Link
+  //         href={href}
+  //         key={item.key}
+  //         onClick={(e) => {
+  //           e.preventDefault();
+  //           router.push(href);
+  //         }}
+  //       >
+  //         <Button
+  //           className={cx(styles.navItem, isActive && styles.activeNavItem)}
+  //           icon={item.icon}
+  //           type={'text'}
+  //         >
+  //           {item.label}
+  //         </Button>
+  //       </Link>
+  //     );
+  //   })
+  //   .filter(Boolean);
 
   return (
     <ChatHeader
@@ -101,9 +102,9 @@ const Nav = memo(() => {
         right: { flex: 1 },
       }}
     >
-      <Flexbox align={'center'} gap={4} horizontal>
+      {/* <Flexbox align={'center'} gap={4} horizontal>
         {navBar}
-      </Flexbox>
+      </Flexbox> */}
       {!isHome && !isProviders && (
         <Flexbox align={'center'} gap={4} horizontal>
           {/* ↓ cloud slot ↓ */}
