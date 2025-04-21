@@ -195,7 +195,7 @@
     "nuqs": "^1.20.0",
     "officeparser": "^5.1.1",
     "ollama": "^0.5.15",
-    "openai": "^4.89.0",
+    "openai": "=4.89.0",
     "openapi-fetch": "^0.9.8",
     "partial-json": "^0.1.7",
     "pdf-parse": "^1.1.1",
